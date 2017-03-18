@@ -1,0 +1,21 @@
+{
+  "name": "mua",
+  "authors": [
+    "dotnetCarpenter <jon.ronnenberg@gmail.com>"
+  ],
+  "description": "logo for mua",
+  "main": "index.htm",
+  "license": "N/A",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "svg.js": "^2.5.0"
+  }
+}

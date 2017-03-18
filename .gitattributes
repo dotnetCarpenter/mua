@@ -1,0 +1,2 @@
+jon.ai filter=lfs diff=lfs merge=lfs -text
+jon.zip filter=lfs diff=lfs merge=lfs -text
