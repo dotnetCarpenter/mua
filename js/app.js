@@ -4,12 +4,12 @@ const drawing = SVG('mua_logo')
 const lines = []
 
 drawing.on('dblclick', event => {
-	const line = drawing.polyline().draw()
-	lines.push(line)
-	line.draw(event)
-
-	/* not working */
+	/* not working - click events are not handled */
 	//const line = drawing.polyline().draw(event)
+
+	const line = drawing.polyline().draw()
+	line.draw(event)
+	lines.push(line)
 })
 
 document.addEventListener('keyup', keyHandler)
