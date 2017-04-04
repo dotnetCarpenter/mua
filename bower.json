@@ -5,8 +5,11 @@
   ],
   "description": "logo for mua",
   "main": "index.htm",
+  "scripts": {
+    "postinstall": "make -j 2"
+  },
   "license": "N/A",
-  "homepage": "",
+  "homepage": "https://dotnetcarpenter.github.io/mua/",
   "private": true,
   "ignore": [
     "**/.*",
