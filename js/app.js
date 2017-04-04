@@ -1,6 +1,6 @@
 'use strict'
 
-const drawing = new SVG('mua_logo')
+const drawing = SVG('mua_logo')
 const lines = []
 
 drawing.on('dblclick', event => {
