@@ -8,7 +8,7 @@
 
         this.el = el;
         el.remember('_paintHandler', this);
-
+    
         var _this = this,
             plugin = this.getPlugin();
 
@@ -26,12 +26,12 @@
                 this.options[i] = options[i];
             }
         }
-
+        
         // Import all methods from plugin into object
         for (var i in plugin){
             this[i] = plugin[i];
         }
-
+        
         // When we got an event, we use this for start, otherwise we use the click-event as default
         if (!event) {
             this.parent.on('click.draw', function (e) {
@@ -46,15 +46,15 @@
 
         this.p.x = x - (this.offset.x - window.pageXOffset);
         this.p.y = y - (this.offset.y - window.pageYOffset);
-
+        
         return this.p.matrixTransform(this.m);
-
+    
     }
-
+    
     PaintHandler.prototype.start = function (event) {
-
+    
         var _this = this;
-
+    
         // get the current transform matrix from screen to element (offset corrected)
         this.m = this.el.node.getScreenCTM().inverse();
 
@@ -97,7 +97,7 @@
         if (event) {
             this.update(event);
         }
-
+        
         // Plugin may want to clean something
         if(this.clean){ this.clean(); }
 
@@ -122,9 +122,9 @@
         if(!event && this.lastUpdateCall){
             event = this.lastUpdateCall;
         }
-
+        
         this.lastUpdateCall = event;
-
+    
         // Call the calc-function which calculates the new position and size
         this.calc(event);
 
@@ -237,14 +237,14 @@
     SVG.Element.prototype.draw.plugins = {};
 
     SVG.Element.prototype.draw.extend('rect image', {
-
+    
         init:function(e){
 
             var p = this.startPoint;
-
+            
             this.el.attr({ x: p.x, y: p.y, height: 1, width: 1 });
         },
-
+        
         calc:function (e) {
 
             var rect = {
@@ -274,17 +274,17 @@
             // draw the element
             this.el.attr(rect);
         }
-
+    
     });
 
     SVG.Element.prototype.draw.extend('line polyline polygon', {
-
+    
         init:function(e){
             // When we draw a polygon, we immediately need 2 points.
             // One start-point and one point at the mouse-position
-
+            
             this.set = new SVG.Set();
-
+            
             var p = this.startPoint,
                 arr = [
                     [p.x, p.y],
@@ -309,13 +309,13 @@
                 var p = this.transformPoint(e.clientX, e.clientY);
                 arr.push(this.snapToGrid([p.x, p.y]));
             }
-
+            
             this.el.plot(arr);
 
         },
-
+        
         point:function(e){
-
+        
             if (this.el.type.indexOf('poly') > -1) {
                 // Add the new Point to the point-array
                 var p = this.transformPoint(e.clientX, e.clientY),
@@ -328,52 +328,52 @@
 
                 // Fire the `drawpoint`-event, which holds the coords of the new Point
                 this.el.fire('drawpoint', {event:e, p:{x:p.x, y:p.y}, m:this.m});
-
+                
                 return;
             }
 
             // We are done, if the element is no polyline or polygon
             this.stop(e);
-
-        },
-
+        
+        }, 
+        
         clean:function(){
-
+        
             // Remove all circles
             this.set.each(function () {
                 this.remove();
             });
-
+            
             this.set.clear();
-
+            
             delete this.set;
-
+        
         },
-
+        
         drawCircles:function (array) {
             this.set.each(function () {
                 this.remove();
             });
 
             this.set.clear();
-
+            
             for (var i = 0; i < array.length; ++i) {
-
+            
                 this.p.x = array[i][0]
                 this.p.y = array[i][1]
-
+                
                 var p = this.p.matrixTransform(this.parent.node.getScreenCTM().inverse().multiply(this.el.node.getScreenCTM()));
-
+            
                 this.set.add(this.parent.circle(5).stroke({width: 1}).fill('#ccc').center(p.x, p.y));
             }
         }
-
+        
     });
 
     SVG.Element.prototype.draw.extend('circle', {
-
+    
         init:function(e){
-
+        
             var p = this.startPoint;
 
             this.el.attr({ cx: p.x, cy: p.y, r: 1 });
@@ -381,7 +381,7 @@
 
         // We determine the radius by the cursor position
         calc:function (e) {
-
+            
             var p = this.transformPoint(e.clientX, e.clientY),
                 circle = {
                     cx: this.startPoint.x,
@@ -393,36 +393,36 @@
                         (p.y - this.startPoint.y) * (p.y - this.startPoint.y)
                     )
             };
-
+            
             this.snapToGrid(circle);
             this.el.attr(circle);
         }
-
+        
     });
 
     SVG.Element.prototype.draw.extend('ellipse', {
-
+    
         init:function(e){
             // We start with a circle with radius 1 at the position of the cursor
             var p = this.startPoint;
 
             this.el.attr({ cx: p.x, cy: p.y, rx: 1, ry: 1 });
-
+            
         },
 
         calc:function (e) {
             var p = this.transformPoint(e.clientX, e.clientY);
-
+        
             var ellipse = {
                 cx: this.startPoint.x,
                 cy: this.startPoint.y,
                 rx: Math.abs(p.x - this.startPoint.x),
                 ry: Math.abs(p.y - this.startPoint.y)
             };
-
+            
             this.snapToGrid(ellipse);
             this.el.attr(ellipse);
         }
-
+        
     });
 }).call(this);
