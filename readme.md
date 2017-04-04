@@ -1,2 +1,2 @@
-+ [with existing svg](index.html)
-+ [bare](simpel.html)
++ [with existing svg](https://dotnetcarpenter.github.io/mua/)
++ [bare](https://dotnetcarpenter.github.io/mua/simpel.html)
