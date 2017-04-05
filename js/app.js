@@ -51,10 +51,9 @@ function cancel() {
 	l.plot(points)
 
 	// redraw circles with new points
-	//l.draw.plugins.polyline.drawCircles.call(l.draw.plugins.polyline, points)
 	l.draw('drawCircles', points.slice(0, -1))
 
-	if( l.array().valueOf().length === 1 ) {
+	if( points.length === 1 ) {
 		l.draw('cancel')
 		lines.pop()
 	}
