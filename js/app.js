@@ -1,5 +1,8 @@
 'use strict'
 
+// causes loads of failures
+// SVG.Element.prototype.draw.defaults.snapToGrid = 0
+
 const drawing = SVG('mua_logo')
 const lines = []
 
@@ -15,19 +18,21 @@ drawing.on('dblclick', event => {
 document.addEventListener('keyup', keyHandler)
 
 function keyHandler(event) {
-	/*console.log(event.keyCode)
-	console.log(event.type)*/
+	/*info(event.keyCode)
+	info(event.type)*/
 
 	// i
 	if(event.keyCode === 73) info(event)
+	// enter
+	if(event.keyCode === 13) stop()
 	// z
-	if(event.keyCode === 90) stop()
-	// ctrl + c
-	if(event.keyCode === 67 && event.ctrlKey) cancel()
+	if(event.keyCode === 90 && !event.ctrlKey) finish() && stop()
+	// ctrl + z
+	if(event.keyCode === 90 && event.ctrlKey) cancel()
 }
 
-function info(obj) {
-	Object.is(obj, Object) ? console.dir(obj) : console.log(obj)
+function info(...items) {
+	console.log.apply(null, items)
 }
 
 function stop() {
@@ -39,15 +44,27 @@ function peek(array) {
 	return array[array.length - 1]
 }
 
+function finish() {
+	const l = peek(lines)
+
+	if(!l) return false
+
+	const points = l.array().valueOf()
+	const firstPoint = points[0]
+
+	//l.draw('point', { clientX: firstPoint[0], clientY: firstPoint[1] })
+	l.draw('stop', { clientX: firstPoint[0], clientY: firstPoint[1] })
+
+	return true
+}
+
 function cancel() {
 	const l = peek(lines)
 
-	if(!l) return
+	if(!l) return false
 
 	// remove last point
 	const points = l.array().valueOf().slice(0, -1)
-
-	info(points)
 
 	// update polyline with new points
 	l.plot(points)
@@ -62,6 +79,8 @@ function cancel() {
 		l.draw('cancel')
 		lines.pop()
 	}
+
+	return true
 }
 
 /*

@@ -3,8 +3,9 @@
 ## Usage
 
 + double click to start drawing
-+ `z` stop drawing
-+ `ctrl + c` cancel last point
++ press `enter` stop drawing
++ press `z` to finish the line with the first point 
++ press `ctrl + <` cancel last point
 
 Check info in the browser console.
 
