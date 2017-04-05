@@ -8,7 +8,7 @@ drawing.on('dblclick', event => {
 	//const line = drawing.polyline().draw(event)
 
 	const line = drawing.polyline().draw()
-	line.draw(event)
+	line.draw('start', event)
 	lines.push(line)
 })
 
@@ -41,6 +41,8 @@ function peek(array) {
 
 function cancel() {
 	const l = peek(lines)
+	l.plot(l.array().valueOf().slice(0, -1))
+	/*
 	const points = l.attr('points').replace(/(\s\d+,\d+){2}$/, '')
 
 	info(l.attr('points'))
@@ -48,13 +50,10 @@ function cancel() {
 
 	info(points)
 	l.attr('points', points)
-	l.array(new SVG.PointArray(
-		l.array().value.slice(0, l.array().value.length - 3)
-	))
 
 	info(l.attr('points'))
 	info(l.array().value.reduce( (a1,a2) => a1.concat(a2) ).join(' '))
-
+	*/
 	/*peek(lines)
 		.draw('cancel')*/
 }
