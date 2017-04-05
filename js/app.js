@@ -41,21 +41,23 @@ function peek(array) {
 
 function cancel() {
 	const l = peek(lines)
-	l.plot(l.array().valueOf().slice(0, -1))
-	/*
-	const points = l.attr('points').replace(/(\s\d+,\d+){2}$/, '')
 
-	info(l.attr('points'))
-	info(l.array().value.reduce( (a1,a2) => a1.concat(a2) ).join(' '))
+	if(!l) return
 
-	info(points)
-	l.attr('points', points)
+	// remove last point
+	const points = l.array().valueOf().slice(0, -1)
 
-	info(l.attr('points'))
-	info(l.array().value.reduce( (a1,a2) => a1.concat(a2) ).join(' '))
-	*/
-	/*peek(lines)
-		.draw('cancel')*/
+	// update polyline with new points
+	l.plot(points)
+
+	// redraw circles with new points
+	//l.draw.plugins.polyline.drawCircles.call(l.draw.plugins.polyline, points)
+	l.draw('drawCircles', points.slice(0, -1))
+
+	if( l.array().valueOf().length === 1 ) {
+		l.draw('cancel')
+		lines.pop()
+	}
 }
 
 /*
