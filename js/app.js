@@ -47,11 +47,16 @@ function cancel() {
 	// remove last point
 	const points = l.array().valueOf().slice(0, -1)
 
+	info(points)
+
 	// update polyline with new points
 	l.plot(points)
 
 	// redraw circles with new points
 	l.draw('drawCircles', points.slice(0, -1))
+
+	// update the polyline to end at the mouse position
+	l.draw('update')
 
 	if( points.length === 1 ) {
 		l.draw('cancel')
