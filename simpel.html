@@ -23,10 +23,20 @@
 		</style>
 	</head>
 	<body>
+		<fieldset class="legend">
+			<legend>Keybindings</legend>
+			<ul class="legend__list">
+				<template id="legend__item" class="legend__item">
+					<li><kbd class="legend__ctrl"></kbd><kbd class="legend__key"></kbd>: <span class="legend__description"></span></li>
+				</template>
+			</ul>
+		</fieldset>
+
 		<div id="mua_logo"></div>
+
 		<script src="js/lib/svg.min.js" defer></script>
 		<script src="js/lib/svg.draw.js" defer></script>
-		<script src="js/commands.js" defer></script>		
+		<script src="js/commands.js" defer></script>
 		<script src="js/app.js" defer></script>
 	</body>
 </html>

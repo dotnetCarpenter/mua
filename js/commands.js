@@ -15,15 +15,15 @@ Mua.Commands = function Commands() {
 				ctrlKey: false,
 				description: 'print the keyboard event and current polylines to console.log'
 			}, {
-				command: closePolylineCommand,
+				command: finishPolylineCommand,
 				keyCode: 13,
 				ctrlKey: false,
-				description: 'close the line with the first point'
+				description: 'finish drawing'
 			}, {
-				command: finishPolylineCommand,
+				command: closePolylineCommand,
 				keyCode: 90,
 				ctrlKey: false,
-				description: 'stop drawing'
+				description: 'close the line with the first point'
 			}, {
 				command: undoDrawCommand,
 				keyCode: 90,
@@ -70,10 +70,10 @@ Mua.Commands = function Commands() {
 		console.log.apply(null, items)
 	}
 
-	function closePolylineCommand(parameters) {
+	function finishPolylineCommand(parameters) {
 		finish(parameters.lines)
 	}
-	function finishPolylineCommand(parameters) {
+	function closePolylineCommand(parameters) {
 		close(parameters.lines) && finish(parameters.lines)
 	}
 	function undoDrawCommand(parameters) {

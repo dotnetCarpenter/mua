@@ -23,6 +23,9 @@ createLegend()
 function createLegend() {
 	const legend = document.querySelector('.legend__list')
 	const template = document.querySelector('#legend__item')
+
+	if(!template) return
+
 	const keyBindingTemplate = template.content.querySelectorAll('.legend__ctrl, .legend__key, .legend__description')
 	const commandInfos = commands.keyboardKeys
 
