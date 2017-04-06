@@ -13,6 +13,10 @@
     <meta property="og:image:height"content="500">
 
 		<style>
+			body {
+				font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+			}
+
 			svg {
 				background-color: hsla(31, 10%, 80%, 0.1);
 			}
@@ -21,6 +25,7 @@
 				stroke-width: 1;
 				stroke: #000;
 			}
+
 			.legend {
 				position: fixed;
 				top: 1em;
@@ -33,6 +38,34 @@
 				padding: 0;
 
 				list-style: none;
+			}
+			.legend__ctrl, .legend__key {
+				position: relative;
+				display: inline-block;
+				margin: 0 .1em;
+				padding: .1em .6em;
+
+				background-color: #e1e3e5;
+				border: 1px solid #adb3b9;
+				border-radius: 3px;
+				box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
+
+				font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+				font-size: 11px;
+				line-height: 1.4;
+				color: #242729;
+				text-shadow: 0 1px 0 #FFF;
+
+				white-space: nowrap;
+			}
+			.legend__ctrl {
+				margin-right: 1em;
+			}
+			.legend__ctrl::after {
+				position: absolute;
+				top: 0;
+				right: -1em;
+				content: ' +';
 			}
 		</style>
 	</head>
@@ -121,12 +154,15 @@
 		<fieldset class="legend">
 			<legend>Keybindings</legend>
 			<ul class="legend__list">
+				<template id="legend__item" class="legend__item">
+					<li><kbd class="legend__ctrl"></kbd><kbd class="legend__key"></kbd>: <span class="legend__description"></span></li>
+				</template>
 			</ul>
 		</fieldset>
 
 		<script src="js/lib/svg.min.js" defer></script>
 		<script src="js/lib/svg.draw.js" defer></script>
-		<script src="js/commands.js" defer></script>		
+		<script src="js/commands.js" defer></script>
 		<script src="js/app.js" defer></script>
 	</body>
 </html>
