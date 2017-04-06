@@ -23,7 +23,7 @@ Mua.Commands = function Commands() {
 				command: closePolylineCommand,
 				keyCode: 90,
 				ctrlKey: false,
-				description: 'close the line with the first point'
+				description: 'close the line with to the first point'
 			}, {
 				command: undoDrawCommand,
 				keyCode: 90,
@@ -33,14 +33,12 @@ Mua.Commands = function Commands() {
 		)
 	)
 
-	// export
-	this.keyHandler = keyHandler
-	this.keyboardKeys = keyboardKeys
-
 	function createCommands(...commands) {
 		return commands.map(c => {
 			return [
-				e => e.keyCode === c.keyCode && c.ctrlKey === e.ctrlKey,
+				// predicate A.K.A. accept, used as Map key
+				e => e.keyCode === c.keyCode && e.ctrlKey === c.ctrlKey,
+				// command object, used as Map value
 				{
 					execute: c.command,
 					keyCode: c.keyCode,
@@ -51,33 +49,24 @@ Mua.Commands = function Commands() {
 		})
 	}
 
-	function keyHandler(keyboardKeys, lines) {
-		return event => {
-			/*info(event.keyCode)
-			info(event.type)*/
-
-			for(const [accept, command] of keyboardKeys) {
-				if( accept(event) )	command.execute({ event, lines })
-			}
-		}
-	}
-
 	function keyupInfoCommand(parameters) {
-		info(parameters.event, parameters.lines)
-	}
-
-	function info(...items) {
-		console.log.apply(null, items)
+		info(parameters.lines,parameters.event)
 	}
 
 	function finishPolylineCommand(parameters) {
 		finish(parameters.lines)
 	}
+
 	function closePolylineCommand(parameters) {
 		close(parameters.lines) && finish(parameters.lines)
 	}
+
 	function undoDrawCommand(parameters) {
 		cancel(parameters.lines)
+	}
+
+	function info(...items) {
+		console.log.apply(null, items)
 	}
 
 	function finish(lines) {
@@ -127,5 +116,20 @@ Mua.Commands = function Commands() {
 
 		return true
 	}
+
+	function keyHandler(keyboardKeys, lines) {
+		return event => {
+			/*info(event.keyCode)
+			info(event.type)*/
+
+			for(const [accept, command] of keyboardKeys) {
+				if( accept(event) )	command.execute({ event, lines })
+			}
+		}
+	}
+
+	// export
+	this.keyboardKeys = keyboardKeys
+	this.keyHandler = keyHandler
 
 }

@@ -14,16 +14,19 @@
 
 		<style>
 			body {
-				font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+				font-family: "Helvetica Neue",Helvetica,sans-serif;
 			}
 
 			svg {
 				background-color: hsla(31, 10%, 80%, 0.1);
 			}
-			polyline {
+			polyline, .animation-path {
 				fill: transparent;
 				stroke-width: 1;
-				stroke: #000;
+				stroke: black;
+			}
+			.animation-path {
+				stroke: darkred;
 			}
 
 			.legend {
@@ -50,7 +53,7 @@
 				border-radius: 3px;
 				box-shadow: 0 1px 0 rgba(12,13,14,0.2), 0 0 0 2px #FFF inset;
 
-				font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+				font-family: "Helvetica Neue",Helvetica,sans-serif;
 				font-size: 11px;
 				line-height: 1.4;
 				color: #242729;
@@ -64,10 +67,16 @@
 			.legend__ctrl::after {
 				position: absolute;
 				top: 0;
-				right: -1em;
+				right: -.9em;
 				content: ' +';
 			}
 		</style>
+
+		<script src="js/lib/svg.min.js" defer></script>
+		<script src="js/lib/svg.draw.js" defer></script>
+		<script src="js/lib/svg.topath.js" defer></script>
+		<script src="js/commands.js" defer></script>
+		<script src="js/app.js" defer></script>
 	</head>
 	<body>
 		<svg version="1.1" id="mua_logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -160,9 +169,5 @@
 			</ul>
 		</fieldset>
 
-		<script src="js/lib/svg.min.js" defer></script>
-		<script src="js/lib/svg.draw.js" defer></script>
-		<script src="js/commands.js" defer></script>
-		<script src="js/app.js" defer></script>
 	</body>
 </html>

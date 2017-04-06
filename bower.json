@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "svg.js": "^2.5.0",
-    "svg.draw.js": "^2.0.2"
+    "svg.draw.js": "^2.0.2",
+    "svg.topath.js": "^1.0.0"
   }
 }
