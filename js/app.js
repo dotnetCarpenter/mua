@@ -18,20 +18,22 @@ drawing.on('dblclick', event => {
 
 document.addEventListener('keyup', commands.keyHandler(commands.keyboardKeys, lines))
 
-for (const list of document.querySelectorAll('.legend__list')) {
+createLegend()
+
+function createLegend() {
+	const legend = document.querySelector('.legend__list')
 	const template = document.querySelector('#legend__item')
-	const item = template.content.querySelectorAll('.legend__ctrl, .legend__key, .legend__description')
+	const keyBindingTemplate = template.content.querySelectorAll('.legend__ctrl, .legend__key, .legend__description')
+	const commandInfos = commands.keyboardKeys
 
-	for(const command of commands.keyboardKeys.values()) {
+	commandInfos.forEach(command => {
+		keyBindingTemplate[0].textContent = 'ctrl'
+		keyBindingTemplate[1].textContent = command.keyCode === 13 ? "enter" : String.fromCharCode(command.keyCode).toLowerCase()
+		keyBindingTemplate[2].textContent = command.description
 
-		if(command.ctrlKey) item[0].textContent = 'ctrl'
-		item[1].textContent = command.keyCode === 13 ? "enter" : String.fromCharCode(command.keyCode).toLowerCase()
-		item[2].textContent = command.description
-			
-		const clone = document.importNode(template.content, true)
-		
+		const clone = document.importNode(template.content, true)	
 		if(!command.ctrlKey) clone.querySelector('.legend__ctrl').remove()
-		
-		list.appendChild(clone)
-	}
+
+		legend.appendChild(clone)
+	})
 }
