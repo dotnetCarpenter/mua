@@ -2,10 +2,11 @@
 
 ## Usage
 
-+ double click to start drawing
-+ press `enter` stop drawing
-+ press `z` to finish the line with the first point 
-+ press `ctrl + <` cancel last point
++ Double click to start drawing.
++ Press `enter` stop drawing.
++ Press `z` to close the line with the first point.
++ Press `ctrl + c` cancel last point or drawing.
++ Press `i` to print the _i_ keyboard event and current polylines to console.log.
 
 Check info in the browser console.
 

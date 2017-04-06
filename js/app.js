@@ -5,6 +5,7 @@
 
 const drawing = SVG('mua_logo')
 const lines = []
+const commands = new Mua.Commands()
 
 drawing.on('dblclick', event => {
 	/* not working - click events are not handled */
@@ -15,91 +16,22 @@ drawing.on('dblclick', event => {
 	lines.push(line)
 })
 
-document.addEventListener('keyup', keyHandler)
+document.addEventListener('keyup', commands.keyHandler(commands.keyboardKeys, lines))
 
-function keyHandler(event) {
-	/*info(event.keyCode)
-	info(event.type)*/
+for (const list of document.querySelectorAll('.legend__list')) {
+	const fragment = document.createDocumentFragment()
 
-	// i
-	if(event.keyCode === 73) info(event)
-	// enter
-	if(event.keyCode === 13) stop()
-	// z
-	if(event.keyCode === 90 && !event.ctrlKey) finish() && stop()
-	// ctrl + z
-	if(event.keyCode === 90 && event.ctrlKey) cancel()
-}
-
-function info(...items) {
-	console.log.apply(null, items)
-}
-
-function stop() {
-	peek(lines)
-		.draw('done')
-}
-
-function peek(array) {
-	return array[array.length - 1]
-}
-
-function finish() {
-	const l = peek(lines)
-
-	if(!l) return false
-
-	const points = l.array().valueOf()
-	const firstPoint = points[0]
-
-	//l.draw('point', { clientX: firstPoint[0], clientY: firstPoint[1] })
-	l.draw('stop', { clientX: firstPoint[0], clientY: firstPoint[1] })
-
-	return true
-}
-
-function cancel() {
-	const l = peek(lines)
-
-	if(!l) return false
-
-	// remove last point
-	const points = l.array().valueOf().slice(0, -1)
-
-	// update polyline with new points
-	l.plot(points)
-
-	// redraw circles with new points
-	l.draw('drawCircles', points.slice(0, -1))
-
-	// update the polyline to end at the mouse position
-	l.draw('update')
-
-	if( points.length === 1 ) {
-		l.draw('cancel')
-		lines.pop()
+	for(const command of commands.keyboardKeys.values()) {
+		const child = createElement('li')
+		const keyName = command.keyCode === 13 ? "enter" : String.fromCharCode(command.keyCode).toLowerCase()
+		child.textContent = (command.ctrlKey ? 'ctrl + ' : '') + keyName + ': ' + command.description
+			
+		fragment.appendChild(child)
 	}
 
-	return true
+	list.appendChild(fragment)
 }
 
-/*
-const toggler = (f1, f2) => {
-
-	let b = true
-
-	return event => {
-		console.dir(event)
-		console.log(event.type)
-
-		b ? f1(event) : f2(event)
-		b = !b
-	}
+function createElement(tagName) {
+	return document.createElement(tagName)
 }
-
-const info = toggler(
-	() => { drawing.on('drawpoint', console.log) },
-	() => { drawing.off('drawpoint', console.log) }
-)
-*/
-
