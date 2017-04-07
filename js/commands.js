@@ -1,3 +1,5 @@
+/* globals SVG */
+
 'use strict'
 
 var Mua = Mua || {}
@@ -6,7 +8,7 @@ var Mua = Mua || {}
  * Key handling code AKA Commands
  * @return {Object} keyHandler function and keyboardKeys
  */
-Mua.Commands = function Commands() {
+;(function(exports) {
 
 	const keyboardKeys = new Map(
 		createCommands({
@@ -28,108 +30,108 @@ Mua.Commands = function Commands() {
 				command: undoDrawCommand,
 				keyCode: 90,
 				ctrlKey: true,
-				description: 'cancel last point or drawing'
-			}
-		)
-	)
+                description: 'cancel last point or drawing'
+            }
+        )
+    )
 
-	function createCommands(...commands) {
-		return commands.map(c => {
-			return [
-				// predicate A.K.A. accept, used as Map key
-				e => e.keyCode === c.keyCode && e.ctrlKey === c.ctrlKey,
-				// command object, used as Map value
-				{
-					execute: c.command,
-					keyCode: c.keyCode,
-					ctrlKey: c.ctrlKey,
-					description: c.description
-				}
-			]
-		})
-	}
+    function createCommands(...commands) {
+        return commands.map(c => {
+            return [
+                // predicate A.K.A. accept, used as Map key
+                e => e.keyCode === c.keyCode && e.ctrlKey === c.ctrlKey,
+                // command object, used as Map value
+                {
+                    execute: c.command,
+                    keyCode: c.keyCode,
+                    ctrlKey: c.ctrlKey,
+                    description: c.description
+                }
+            ]
+        })
+    }
 
-	function keyupInfoCommand(parameters) {
-		info(parameters.lines,parameters.event)
-	}
+	// exports
+	exports.keyboardKeys = keyboardKeys
+	exports.keyHandler = keyHandler
 
-	function finishPolylineCommand(parameters) {
-		finish(parameters.lines)
-	}
+    function keyHandler(keyboardKeys, lines) {
+        return event => {
+            /*info(event.keyCode)
+            info(event.type)*/
 
-	function closePolylineCommand(parameters) {
-		close(parameters.lines) && finish(parameters.lines)
-	}
+            for(const [accept, command] of keyboardKeys) {
+                if( accept(event) ) command.execute({ event, lines })
+            }
+        }
+    }
 
-	function undoDrawCommand(parameters) {
-		cancel(parameters.lines)
-	}
+    function keyupInfoCommand(parameters) {
+        info(parameters.lines,parameters.event)
+    }
 
-	function info(...items) {
-		console.log.apply(null, items)
-	}
+    function finishPolylineCommand(parameters) {
+        finish(parameters.lines)
+    }
 
-	function finish(lines) {
-		peek(lines)
-			.draw('done')
-	}
+    function closePolylineCommand(parameters) {
+        close(parameters.lines) && finish(parameters.lines)
+    }
 
-	function peek(array) {
-		return array[array.length - 1]
-	}
+    function undoDrawCommand(parameters) {
+        cancel(parameters.lines)
+    }
 
-	function close(lines) {
-		const l = peek(lines)
+    function info(...items) {
+        console.log.apply(null, items)
+    }
 
-		if(!l) return false
+    function finish(lines) {
+        peek(lines)
+            .draw('done')
+    }
 
-		const points = l.array().valueOf()
-		const firstPoint = points[0]
+    function peek(array) {
+        return array[array.length - 1]
+    }
 
-		//l.draw('point', { clientX: firstPoint[0], clientY: firstPoint[1] })
-		l.draw('stop', { clientX: firstPoint[0], clientY: firstPoint[1] })
+    function close(lines) {
+        const l = peek(lines)
 
-		return true
-	}
+        if(!l) return false
 
-	function cancel(lines) {
-		const l = peek(lines)
+        const points = l.array().valueOf()
+        const firstPoint = points[0]
 
-		if(!l) return false
+        //l.draw('point', { clientX: firstPoint[0], clientY: firstPoint[1] })
+        l.draw('stop', { clientX: firstPoint[0], clientY: firstPoint[1] })
 
-		// remove last point
-		const points = l.array().valueOf().slice(0, -1)
+        return true
+    }
 
-		// update polyline with new points
-		l.plot(points)
+    function cancel(lines) {
+        const l = peek(lines)
 
-		// redraw circles with new points
-		l.draw('drawCircles', points.slice(0, -1))
+        if(!l) return false
 
-		// update the polyline to end at the mouse position
-		l.draw('update')
+        // remove last point
+        const points = l.array().valueOf().slice(0, -1)
 
-		if( points.length === 1 ) {
-			l.draw('cancel')
-			lines.pop()
-		}
+        // update polyline with new points
+        l.plot(points)
 
-		return true
-	}
+        // redraw circles with new points
+        l.draw('drawCircles', points.slice(0, -1))
 
-	function keyHandler(keyboardKeys, lines) {
-		return event => {
-			/*info(event.keyCode)
-			info(event.type)*/
+        // update the polyline to end at the mouse position
+        l.draw('update')
 
-			for(const [accept, command] of keyboardKeys) {
-				if( accept(event) )	command.execute({ event, lines })
-			}
-		}
-	}
+        if( points.length === 1 ) {
+            l.draw('cancel')
+            lines.pop()
+        }
 
-	// export
-	this.keyboardKeys = keyboardKeys
-	this.keyHandler = keyHandler
+        return true
+    }
 
-}
+}(Mua.Commands || (Mua.Commands = {})))

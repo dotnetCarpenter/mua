@@ -12,3 +12,12 @@ js/lib/%.js: %.js
 	cp -fv $? $@
 
 vpath %.js $(libdirs)
+
+
+# If plato is installed (npm i -g plato) then we can create a complexity report
+.phony: complex
+
+allProjectFiles := js/app.js js/commands.js ${targets}
+
+complex: ; @which plato > /dev/null
+	plato --jshint .jshint.json --noempty --dir complexity/ ${allProjectFiles}

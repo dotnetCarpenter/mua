@@ -8,7 +8,7 @@
 + Press `ctrl + c` cancel last point or drawing.
 + Press `i` to print the _i_ keyboard event and current polylines to console.log.
 
-Check info in the browser console.
+## Demo
 
 + [with existing svg](https://dotnetcarpenter.github.io/mua/)
 + [bare](https://dotnetcarpenter.github.io/mua/simpel.html)

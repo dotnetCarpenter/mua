@@ -1,3 +1,5 @@
+/* globals Mua,SVG */
+
 'use strict'
 
 // causes loads of failures
@@ -5,7 +7,7 @@
 
 const drawing = SVG('mua_logo')
 const lines = []
-const commands = new Mua.Commands()
+const commands = Mua.Commands
 
 drawing.on('dblclick', event => {
 	/* not working - click events are not handled */
@@ -22,7 +24,7 @@ document.addEventListener('keyup', commands.keyHandler(commands.keyboardKeys, li
 createLegend()
 
 function createLegend() {
-	const legend = document.querySelector('.legend__list')
+	const legends = document.querySelectorAll('.legend__list')
 	const template = document.querySelector('#legend__item')
 
 	if(!template) return
@@ -35,9 +37,11 @@ function createLegend() {
 		keyBindingTemplate[1].textContent = command.keyCode === 13 ? "enter" : String.fromCharCode(command.keyCode).toLowerCase()
 		keyBindingTemplate[2].textContent = command.description
 
-		const clone = document.importNode(template.content, true)	
-		if(!command.ctrlKey) clone.querySelector('.legend__ctrl').remove()
+		legends.forEach( legend => {
+			const clone = document.importNode(template.content, true)	
+			if(!command.ctrlKey) clone.querySelector('.legend__ctrl').remove()
 
-		legend.appendChild(clone)
+			legend.appendChild(clone)
+		})
 	})
 }
