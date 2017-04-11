@@ -25,7 +25,7 @@ var Mua = Mua || {}
 				command: closePolylineCommand,
 				keyCode: 90,
 				ctrlKey: false,
-				description: 'close the line with to the first point'
+				description: 'close the line to the first point'
 			}, {
 				command: undoDrawCommand,
 				keyCode: 90,
