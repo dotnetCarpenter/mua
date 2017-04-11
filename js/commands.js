@@ -121,7 +121,8 @@ var Mua = Mua || {}
         l.plot(points)
 
         // redraw circles with new points
-        l.draw('drawCircles', points.slice(0, -1))
+        //l.draw('drawCircles', points.slice(0, -1))
+		l.draw('drawCircles')
 
         // update the polyline to end at the mouse position
         l.draw('update')

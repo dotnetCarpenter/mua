@@ -14,8 +14,8 @@ drawing.on('dblclick', event => {
 	//const line = drawing.polyline().draw(event)
 
 	const line = drawing.polyline().draw()
-	line.draw('start', event)
-	//line.on('drawdone', () => { line.toPath().addClass('animation-path') })
+	line.draw('point', event)
+
 	lines.push(line)
 })
 
@@ -38,7 +38,7 @@ function createLegend() {
 		keyBindingTemplate[2].textContent = command.description
 
 		legends.forEach( legend => {
-			const clone = document.importNode(template.content, true)	
+			const clone = document.importNode(template.content, true)
 			if(!command.ctrlKey) clone.querySelector('.legend__ctrl').remove()
 
 			legend.appendChild(clone)
