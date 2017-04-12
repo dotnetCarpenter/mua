@@ -75,7 +75,7 @@ var Mua = Mua || {}
     }
 
     function closePolylineCommand(parameters) {
-        close(parameters.lines) && finish(parameters.lines)
+        finish(parameters.lines) && close(parameters.lines)
     }
 
     function undoDrawCommand(parameters) {
@@ -89,6 +89,7 @@ var Mua = Mua || {}
     function finish(lines) {
         peek(lines)
             .draw('done')
+        return true
     }
 
     function peek(array) {
@@ -103,8 +104,13 @@ var Mua = Mua || {}
         const points = l.array().valueOf()
         const firstPoint = points[0]
 
+        // using l.draw doesn't work because (from fuzzyma):
+        // The problem you are expecting is with the coordinate transformation which is done with the mousecoordinates
+        // so basically you pull already transformed coordinates from teh dom and try to pass them as non transformed coordinates to the stop funciton
+        // that ofc transforms them again which results in wrong points
         //l.draw('point', { clientX: firstPoint[0], clientY: firstPoint[1] })
-        l.draw('stop', { clientX: firstPoint[0], clientY: firstPoint[1] })
+        //l.draw('stop', { clientX: firstPoint[0], clientY: firstPoint[1] })
+        l.attr('points', points.concat(firstPoint).join(' '))
 
         return true
     }

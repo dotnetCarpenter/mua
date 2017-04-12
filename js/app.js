@@ -13,7 +13,7 @@ drawing.on('dblclick', event => {
 	/* not working - click events are not handled */
 	//const line = drawing.polyline().draw(event)
 
-	const line = drawing.polyline().draw()
+	const line = drawing.polyline(null, {snapToGrid:0}).draw()
 	line.draw('start', event)
 	//line.on('drawdone', () => { line.toPath().addClass('animation-path') })
 	lines.push(line)
