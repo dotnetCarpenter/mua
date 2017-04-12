@@ -87,9 +87,15 @@ var Mua = Mua || {}
     }
 
     function finish(lines) {
-        peek(lines)
-            .draw('done')
-        return true
+        const l = peek(lines)
+        let action = ''
+
+        if(l.array().valueOf().length < 3) action = 'cancel', lines.pop()
+        else action = 'done'
+
+        l.draw(action)
+
+        return action === 'done' ? true: false
     }
 
     function peek(array) {
